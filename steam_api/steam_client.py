@@ -3,7 +3,8 @@ import pandas as pd
 import os
 import streamlit as st
 
-STEAM_API_KEY = st.secrets["STEAM_API_KEY"]
+#STEAM_API_KEY = st.secrets["STEAM_API_KEY"]
+STEAM_API_KEY = '8EE53C019826526192B12D40C050B381'
 
 BASE = "https://api.steampowered.com"
 

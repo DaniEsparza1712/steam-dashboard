@@ -84,8 +84,8 @@ def build_animated_bar_race(achievements, owned, topN=15, interpolation_value=10
     rank_frames.append(last_ranks)
 
     # ----- ANIMATION -----
-    fig = plt.figure(figsize=(8, 4), facecolor="#353437")
-    rb_ax = fig.add_subplot(facecolor="#353437")
+    fig = plt.figure(figsize=(8, 4), facecolor="#0a0b0d")
+    rb_ax = fig.add_subplot(facecolor="#0a0b0d")
     text_color = "#e4ddeb"
 
     image_cache = {}
@@ -129,6 +129,11 @@ def build_animated_bar_race(achievements, owned, topN=15, interpolation_value=10
         rb_ax.tick_params(axis="x", colors=text_color)
         rb_ax.set_title(f"Achievements Unlocked: {date}", color=text_color)
         rb_ax.grid(axis="x", linestyle="--", alpha=0.4, color=text_color)
+
+        rb_ax.spines['top'].set_color(text_color)
+        rb_ax.spines['bottom'].set_color(text_color)
+        rb_ax.spines['right'].set_color(text_color)
+        rb_ax.spines['left'].set_color(text_color)
 
     anim = animation.FuncAnimation(fig, animate, frames=len(interp_frames), interval=45)
 
