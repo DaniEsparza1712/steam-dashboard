@@ -3,12 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from io import BytesIO
 from PIL import Image
 import requests
 import base64
-import math
 import plotly.graph_objects as go
 import streamlit as st
 from matplotlib.colors import to_hex
@@ -115,60 +113,4 @@ def get_top_games_plot_plotly(top):
         )
     )
 
-    return fig
-
-
-def get_top_games_plot(top):
-    appid_to_color = {
-        appid: steam_cmap(i / len(top)) for i, appid in enumerate(top['appid'].unique())
-    }
-
-    fig, ax = plt.subplots(figsize=(8, 3), facecolor=bg_color)
-    ax.set_facecolor(bg_color)
-
-    print(top['capsule_image_path'])
-
-    top_df = top.sort_values(by='playtime_forever').copy()
-    top_df['playtime_forever'] /= 60.0
-
-    colors = [appid_to_color[appid] for appid in top_df['appid']]
-    bars = ax.barh(top_df['name'], top_df['playtime_forever'], color=colors)
-
-    # Add capsule images
-    for appid, bar in zip(top_df['appid'], bars):
-        img_url = top.loc[top['appid'] == appid, 'capsule_image_path'].values[0]
-        y = bar.get_y() + bar.get_height() / 2
-        if str(img_url) != 'None':
-            img = load_remote_image(img_url)
-            oi = OffsetImage(img, zoom=0.15)
-            ab = AnnotationBbox(
-                oi,
-                (0, y),
-                xybox=(-25, 0),
-                xycoords='data',
-                boxcoords='offset points',
-                frameon=False
-            )
-            ax.add_artist(ab)
-
-        ax.text(
-            bar.get_width() + 1,
-            y,
-            f"{top_df.loc[top_df['appid'] == appid, 'name'].values[0]} "
-            f"({top_df.loc[top_df['appid'] == appid, 'playtime_forever'].values[0]:.1f} hrs)",
-            va='center',
-            color=text_color,
-            fontsize=6
-        )
-
-    # Style
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['bottom'].set_color(text_color)
-    ax.spines['left'].set_color(text_color)
-
-    ax.set_yticks([]) 
-    ax.tick_params(colors=text_color)
-
-    plt.tight_layout()
     return fig
