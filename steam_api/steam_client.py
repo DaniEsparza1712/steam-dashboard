@@ -1,8 +1,9 @@
 import requests
 import pandas as pd
 import os
+import streamlit as st
 
-STEAM_API_KEY = os.getenv("STEAM_API_KEY")
+STEAM_API_KEY = st.secrets["STEAM_API_KEY"]
 
 BASE = "https://api.steampowered.com"
 
